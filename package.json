@@ -1,0 +1,15 @@
+{
+  "name": "peach-vs-nectarine",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Interactive digital poster comparing peaches and nectarines. School assignment.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.5"
+  }
+}

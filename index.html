@@ -1,0 +1,1291 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ================================================================
+         SEO / sharing metadata
+         ================================================================ -->
+    <title>Peach vs. Nectarine — Interactive Digital Poster</title>
+    <meta
+      name="description"
+      content="An interactive poster comparing peaches and nectarines: origin, head-to-head comparison, nutrition, cooking and fun facts."
+    />
+
+    <!-- ================================================================
+         Google Fonts: Fredoka (headings) + Nunito (body)
+         preconnect avoids a round-trip before the font request starts
+         ================================================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ================================================================
+         Stylesheets: tokens -> base -> print
+         ================================================================ -->
+    <link rel="stylesheet" href="./src/styles/tokens.css" />
+    <link rel="stylesheet" href="./src/styles/base.css" />
+    <link rel="stylesheet" href="./src/styles/print.css" />
+  </head>
+
+  <body>
+    <!-- ==================================================================
+         ICON SPRITE
+         Every icon on the poster is one of these symbols, drawn on a 24×24
+         grid with a 1.75 stroke, round caps and round joins, and coloured
+         with `currentColor` so it can only ever use a design token.
+         The sprite itself is never rendered: it is a hidden library that
+         `<use href="#icon-…">` points at. All icons are decorative, so the
+         markup that uses them is always aria-hidden and the text carries
+         the meaning on its own.
+         ================================================================== -->
+    <svg aria-hidden="true" style="display: none" focusable="false">
+      <!-- Origin: the two fruits are one species -->
+      <symbol
+        id="icon-leaf"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M20 4C10 4 4 10 4 17a3 3 0 0 0 3 3c7 0 13-6 13-16Z" />
+        <path d="M4 20C9 15 14 9 20 4" />
+      </symbol>
+
+      <!-- Stone fruit: the seed inside the flesh -->
+      <symbol
+        id="icon-drupe"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2ZM12 15.5c-1.66 0-3-1.34-3-3s1.34-3 3-3s3 1.34 3 3-1.34 3-3 3Z" />
+        <path d="M9 12h6" />
+      </symbol>
+
+      <!-- Timeline: China -->
+      <symbol
+        id="icon-pin"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M12 21c4.4-4.5 7-8.5 7-11.5a7 7 0 0 0-14 0C5 12.5 7.6 16.5 12 21Z"
+        />
+        <circle cx="12" cy="9.5" r="2.5" />
+      </symbol>
+
+      <!-- Timeline: Persia -->
+      <symbol
+        id="icon-compass"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M15.5 8.5 13.2 13.2 8.5 15.5l2.3-4.7Z" />
+      </symbol>
+
+      <!-- Timeline: Europe -->
+      <symbol
+        id="icon-temple"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M3 9.5 12 4l9 5.5" />
+        <path d="M3 9.5h18" />
+        <path d="M6.5 9.5v8M12 9.5v8M17.5 9.5v8" />
+        <path d="M3.5 17.5h17" />
+      </symbol>
+
+      <!-- Timeline: the Americas -->
+      <symbol
+        id="icon-ship"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 3v14" />
+        <path d="M13.5 4.5 19 12h-5.5" />
+        <path d="M4 16h16l-2.5 4.5h-11Z" />
+      </symbol>
+
+      <!-- Myth buster -->
+      <symbol
+        id="icon-lightbulb"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M12 3a6 6 0 0 0-3.5 10.9V17h7v-3.1A6 6 0 0 0 12 3Z"
+        />
+        <path d="M10 20h4" />
+      </symbol>
+
+      <!-- Benefits: Vitamin C -->
+      <symbol
+        id="icon-shield-check"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 3.2 19 6v5.6c0 4.4-2.9 7.6-7 9.2-4.1-1.6-7-4.8-7-9.2V6Z" />
+        <path d="m8.8 11.8 2.4 2.4 4.1-4.4" />
+      </symbol>
+
+      <!-- Benefits: fiber and potassium -->
+      <symbol
+        id="icon-wheat"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 21V8" />
+        <path d="m12 8-3-2.5M12 8l3-2.5" />
+        <path d="m12 12.5-3-2.5M12 12.5l3-2.5" />
+        <path d="m12 17-3-2.5M12 17l3-2.5" />
+      </symbol>
+
+      <!-- Benefits: light and hydrating -->
+      <symbol
+        id="icon-drop"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M12 3.5c3.5 4 5.5 6.6 5.5 9a5.5 5.5 0 0 1-11 0c0-2.4 2-5 5.5-9Z"
+        />
+      </symbol>
+
+      <!-- Nutrition footnote -->
+      <symbol
+        id="icon-info"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M12 11v5.5" />
+        <path d="M12 7.8h.01" />
+      </symbol>
+
+      <!-- Kitchen: fresh -->
+      <symbol
+        id="icon-bowl"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M3.5 11h17" />
+        <path d="M5.5 11c1.4 4.8 3.6 7 6.5 7s5.1-2.2 6.5-7" />
+        <path d="M9.5 8.5c0-1.2 1-2 2.5-2s2.5.8 2.5 2" />
+      </symbol>
+
+      <!-- Kitchen: baked -->
+      <symbol
+        id="icon-pie"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M4.5 16.5a7.5 7.5 0 0 1 15 0" />
+        <path d="M3 16.5h18" />
+        <path d="M9.5 12.5 11 15M14.5 11.5 16 14" />
+      </symbol>
+
+      <!-- Kitchen: preserved -->
+      <symbol
+        id="icon-jar"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M6 3.5h12v2.5H6z" />
+        <path d="M7.5 6h9V20.5h-9z" />
+        <path d="M10 12h4" />
+      </symbol>
+
+      <!-- Kitchen: drinks -->
+      <symbol
+        id="icon-glass"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M7.5 4h9l-1.1 16.5H8.6Z" />
+        <path d="M8.6 12.5h6.8" />
+        <path d="M9.5 4 14 1.5" />
+      </symbol>
+
+      <!-- Kitchen tip -->
+      <symbol
+        id="icon-flame"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 21c-1.65-2.05-4.4-2.05-6 0a10 10 0 0 1 6.05 2.9Z" />
+        <path d="M12 3v15M9 12h6" />
+      </symbol>
+
+      <!-- Fun fact: rose family -->
+      <symbol
+        id="icon-flower"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 10.4a2.9 2.9 0 1 1 0-5.8 2.9 2.9 0 0 1 0 5.8Z" />
+        <path
+          d="M12 10.4a2.9 2.9 0 1 1 0-5.8 2.9 2.9 0 0 1 0 5.8Z"
+          transform="rotate(72 12 12)"
+        />
+        <path
+          d="M12 10.4a2.9 2.9 0 1 1 0-5.8 2.9 2.9 0 0 1 0 5.8Z"
+          transform="rotate(144 12 12)"
+        />
+        <path
+          d="M12 10.4a2.9 2.9 0 1 1 0-5.8 2.9 2.9 0 0 1 0 5.8Z"
+          transform="rotate(216 12 12)"
+        />
+        <path
+          d="M12 10.4a2.9 2.9 0 1 1 0-5.8 2.9 2.9 0 0 1 0 5.8Z"
+          transform="rotate(288 12 12)"
+        />
+        <circle cx="12" cy="12" r="1.5" />
+      </symbol>
+
+      <!-- Fun fact: fruit of immortality -->
+      <symbol
+        id="icon-infinity"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 12s3-6 7-6a6 6 0 1 1 0 12c-4 0-7-6-7-6Z" />
+        <path d="M12 12s-3 6-7 6a6 6 0 1 1 0-12c4 0 7 6 7 6Z" />
+      </symbol>
+
+      <!-- Fun fact: the Bellini -->
+      <symbol
+        id="icon-cocktail"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M4 6.5h16L12 15Z" />
+        <path d="M12 15v4.5" />
+        <path d="M8.5 19.5h7" />
+        <path d="M16.5 3.5a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Z" />
+      </symbol>
+
+      <!-- Comparison table rows -->
+      <symbol
+        id="icon-fuzz"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 7.5c1-1.5 2.5-1.5 3.5 0s2.5 1.5 3.5 0 2.5-1.5 3.5 0 2.5 1.5 3.5 0" />
+        <path d="M6.5 12c1-1.5 2.5-1.5 3.5 0s2.5 1.5 3.5 0 2.5-1.5 3.5 0" />
+        <path d="M8 16.5c1-1.5 2.5-1.5 3.5 0s2.5 1.5 3.5 0" />
+      </symbol>
+
+      <symbol
+        id="icon-dna"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M8 3c0 4.5 8 5 8 9s-8 4.5-8 9" />
+        <path d="M16 3c0 4.5-8 5-8 9s8 4.5 8 9" />
+        <path d="M9.2 7h5.6M8.4 12h7.2M9.2 17h5.6" />
+      </symbol>
+
+      <symbol
+        id="icon-pit"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M12 3.5c3.8 3.8 5.5 6.8 5.5 9.8a5.5 5.5 0 1 1-11 0c0-3 1.7-6 5.5-9.8Z"
+        />
+        <path d="M12 8.5V17" />
+      </symbol>
+
+      <symbol
+        id="icon-ruler"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M3.5 8.5h17v7h-17z" />
+        <path d="M7.5 8.5v3M11.5 8.5v4.5M15.5 8.5v3M19 8.5v4.5" />
+      </symbol>
+
+      <!-- Sources list -->
+      <symbol
+        id="icon-book"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M5.5 4.5A1.5 1.5 0 0 1 7 3h11.5v18H7a1.5 1.5 0 0 1-1.5-1.5Z"
+        />
+        <path d="M8.5 3v18" />
+      </symbol>
+
+      <symbol
+        id="icon-flask"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M9.5 3v6L4.8 17.8A2 2 0 0 0 6.5 21h11a2 2 0 0 0 1.7-3.2L14.5 9V3"
+        />
+        <path d="M8 3h8" />
+        <path d="M6.8 14.5h10.4" />
+      </symbol>
+
+      <symbol
+        id="icon-image"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M3.5 5.5h17v13h-17z" />
+        <path d="m6 15.5 4-4.5 3.5 3.5 2.5-2.5 4 3.5" />
+        <circle cx="8.75" cy="9.25" r="1.25" />
+      </symbol>
+
+      <!-- "Back to top" -->
+      <symbol
+        id="icon-arrow-up"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 20V5" />
+        <path d="m6 11 6-6 6 6" />
+      </symbol>
+    </svg>
+
+    <!-- ==================================================================
+         Decorative leaves. Purely ornamental, so they are hidden from
+         assistive technology and dropped when the poster is printed.
+         ================================================================== -->
+    <svg
+      class="leaf leaf--top-right"
+      viewBox="0 0 120 120"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M8 112C8 56 44 16 112 8c8 68-32 104-104 104Z"
+        fill="currentColor"
+      />
+      <path
+        d="M14 106C40 84 66 62 104 16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        opacity="0.55"
+      />
+    </svg>
+
+    <svg
+      class="leaf leaf--bottom-left"
+      viewBox="0 0 120 120"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M8 112C8 56 44 16 112 8c8 68-32 104-104 104Z"
+        fill="currentColor"
+      />
+      <path
+        d="M14 106C40 84 66 62 104 16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        opacity="0.55"
+      />
+    </svg>
+
+    <main class="poster">
+      <div class="poster__sections">
+        <!-- ==========================================================
+             1. HERO
+             ========================================================== -->
+        <section class="section hero" id="hero" aria-labelledby="hero-title">
+          <h1 class="hero__title" id="hero-title">Peach vs. Nectarine</h1>
+          <p class="hero__subtitle">
+            Same species, different skin. What really sets them apart?
+          </p>
+
+          <div class="hero__figures">
+            <!-- Left: peach -->
+            <figure class="hero__figure">
+              <div class="frame frame--hero frame--hero-peach">
+                <a href="./images/hero-peach.jpg" target="_blank" rel="noopener">
+                  <img
+                  alt="Three ripe peaches with red and yellow fuzzy skin on a dark background"
+                  width="450"
+                  height="300"
+                  decoding="async"
+                  loading="eager"
+                />
+                </a>
+              </div>
+              <figcaption class="hero__figure-caption">Peach</figcaption>
+              <p class="hero__figure-tagline">Soft and fuzzy</p>
+            </figure>
+
+            <!-- Circular badge sitting between the two photographs -->
+            <span class="hero__vs" aria-hidden="true">VS</span>
+
+            <!-- Right: nectarine -->
+            <figure class="hero__figure">
+              <div class="frame frame--hero frame--hero-nectarine">
+                <a href="./images/hero-nectarine.jpg" target="_blank" rel="noopener">
+                  <img
+                  alt="A pile of ripe nectarines with smooth, shiny red and yellow skin on a wooden table"
+                  width="700"
+                  height="350"
+                  decoding="async"
+                  loading="eager"
+                />
+                </a>
+              </div>
+              <figcaption class="hero__figure-caption">Nectarine</figcaption>
+              <p class="hero__figure-tagline">Smooth and shiny</p>
+            </figure>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             2. ORIGIN
+             ================================================================== -->
+        <section class="section" id="origin" aria-labelledby="origin-title">
+          <div class="section__header">
+            <span class="section__badge" aria-hidden="true">01</span>
+            <h2 class="section__title" id="origin-title">
+              Where Do They Come From?
+            </h2>
+          </div>
+
+          <div class="section__body">
+            <!-- Shared species note -->
+            <p class="fact-line">
+              <span class="fact-line__icon" aria-hidden="true">
+                <svg class="icon" aria-hidden="true"><use href="#icon-leaf" /></svg>
+              </span>
+              Both fruits are the same species: <em>Prunus persica</em>. Botanists
+              classify the nectarine as a variety of the peach.
+            </p>
+
+            <!-- Journey: China -> Persia -> Europe -> Americas -->
+            <ol class="timeline" aria-label="How the peach travelled from China to the Americas">
+              <li class="timeline__step">
+                <span class="timeline__marker" aria-hidden="true">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-pin" /></svg>
+                </span>
+                <div class="timeline__content">
+                  <h3 class="timeline__label">China</h3>
+                  <p class="timeline__text">
+                    Peaches first grew in northwest China, where people have
+                    cultivated them for more than 4,000 years.
+                  </p>
+                </div>
+              </li>
+
+              <li class="timeline__step">
+                <span class="timeline__marker" aria-hidden="true">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-compass" /></svg>
+                </span>
+                <div class="timeline__content">
+                  <h3 class="timeline__label">Persia</h3>
+                  <p class="timeline__text">
+                    Traders carried them along the Silk Road to Persia. That is
+                    why the Latin name is <em>persica</em>, meaning “from Persia.”
+                  </p>
+                </div>
+              </li>
+
+              <li class="timeline__step">
+                <span class="timeline__marker" aria-hidden="true">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-temple" /></svg>
+                </span>
+                <div class="timeline__content">
+                  <h3 class="timeline__label">Europe</h3>
+                  <p class="timeline__text">
+                    The Greeks and Romans planted peach trees across Europe.
+                  </p>
+                </div>
+              </li>
+
+              <li class="timeline__step">
+                <span class="timeline__marker" aria-hidden="true">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-ship" /></svg>
+                </span>
+                <div class="timeline__content">
+                  <h3 class="timeline__label">Americas</h3>
+                  <p class="timeline__text">
+                    Spanish explorers brought peaches to the Americas in the
+                    1500s.
+                  </p>
+                </div>
+              </li>
+            </ol>
+
+            <!-- Highlighted myth-buster callout -->
+            <aside class="callout" aria-labelledby="myth-buster-title">
+              <h3 class="callout__title" id="myth-buster-title">
+                <span class="callout__icon" aria-hidden="true">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-lightbulb" />
+                  </svg>
+                </span>
+                Myth buster
+              </h3>
+              <p class="callout__text">
+                Nectarines are not a cross between a peach and a plum. They
+                appeared naturally on peach trees through a small genetic
+                change, and a peach tree can even produce a nectarine now and
+                then.
+              </p>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             3. COMPARISON
+             ================================================================== -->
+        <section
+          class="section"
+          id="comparison"
+          aria-labelledby="comparison-title"
+        >
+          <div class="section__header">
+            <span class="section__badge" aria-hidden="true">02</span>
+            <h2 class="section__title" id="comparison-title">
+              Peach vs. Nectarine
+            </h2>
+          </div>
+
+          <div class="section__body">
+            <!-- Wide banner: the pit stays centred thanks to object-position -->
+            <figure class="figure--banner">
+              <div class="frame frame--banner">
+                <a href="./images/comparison.jpg" target="_blank" rel="noopener">
+                  <img
+                  alt="Top view of a bowl of fresh stone fruits, such as peaches, apricots and plums, on a dark table"
+                  width="860"
+                  height="530"
+                  decoding="async"
+                  loading="lazy"
+                />
+                </a>
+              </div>
+              <figcaption class="figure__caption">
+                Stone fruits come in many shapes and colors.
+              </figcaption>
+            </figure>
+
+            <!-- Interactive fruit switch (screen only).
+                 Hidden unless <html> has the .js class added by main.js, and
+                 dropped in print by the .no-print class. -->
+            <div class="fruit-switch no-print">
+              <div
+                class="fruit-switch__control"
+                role="group"
+                aria-label="Highlight a fruit"
+              >
+                <button
+                  type="button"
+                  class="fruit-switch__btn"
+                  data-fruit="peach"
+                  aria-pressed="false"
+                >
+                  Peach
+                </button>
+                <button
+                  type="button"
+                  class="fruit-switch__btn"
+                  data-fruit="nectarine"
+                  aria-pressed="false"
+                >
+                  Nectarine
+                </button>
+                <button
+                  type="button"
+                  class="fruit-switch__btn is-active"
+                  data-fruit="both"
+                  aria-pressed="true"
+                >
+                  Both
+                </button>
+              </div>
+              <!-- Live region: modules/fruitSwitch.js rewrites this text -->
+              <p class="fruit-switch__caption" aria-live="polite">
+                Same species, one small gene of difference.
+              </p>
+            </div>
+
+            <table class="compare">
+              <caption class="visually-hidden">
+                Attribute-by-attribute comparison of peaches and nectarines.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <span class="visually-hidden">Attribute</span>
+                  </th>
+                  <th scope="col" class="compare__head compare__head--peach">
+                    Peach
+                  </th>
+                  <th
+                    scope="col"
+                    class="compare__head compare__head--nectarine"
+                  >
+                    Nectarine
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    <span class="row-icon" aria-hidden="true">
+                      <svg class="icon" aria-hidden="true">
+                        <use href="#icon-fuzz" />
+                      </svg>
+                    </span>
+                    Skin
+                  </th>
+                  <td data-label="Peach">
+                    Covered in tiny, soft hairs (fuzz)
+                  </td>
+                  <td data-label="Nectarine">Smooth and shiny, with no fuzz</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="row-icon" aria-hidden="true">
+                      <svg class="icon" aria-hidden="true">
+                        <use href="#icon-dna" />
+                      </svg>
+                    </span>
+                    Genetics
+                  </th>
+                  <td data-label="Peach">
+                    Same species; carries the dominant gene for fuzz
+                  </td>
+                  <td data-label="Nectarine">
+                    Same species; two copies of a recessive gene remove the fuzz
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="row-icon" aria-hidden="true">
+                      <svg class="icon" aria-hidden="true">
+                        <use href="#icon-pit" />
+                      </svg>
+                    </span>
+                    Pit (stone)
+                  </th>
+                  <td data-label="Peach">
+                    Hard stone in the center (clingstone or freestone types)
+                  </td>
+                  <td data-label="Nectarine">
+                    Hard stone in the center (clingstone or freestone types)
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="row-icon" aria-hidden="true">
+                      <svg class="icon" aria-hidden="true">
+                        <use href="#icon-drop" />
+                      </svg>
+                    </span>
+                    Flesh
+                  </th>
+                  <td data-label="Peach">Juicy and soft, with a mild sweetness</td>
+                  <td data-label="Nectarine">
+                    Slightly firmer and often a little sweeter; no peeling needed
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <span class="row-icon" aria-hidden="true">
+                      <svg class="icon" aria-hidden="true">
+                        <use href="#icon-ruler" />
+                      </svg>
+                    </span>
+                    Size
+                  </th>
+                  <td data-label="Peach">Usually a little bigger</td>
+                  <td data-label="Nectarine">Usually a little smaller</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p class="fact-line">
+              <span class="fact-line__icon" aria-hidden="true">
+                <svg class="icon" aria-hidden="true"><use href="#icon-drupe" /></svg>
+              </span>
+              Both are stone fruits (drupes) and belong to the rose family
+              (Rosaceae), like cherries, plums and almonds.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             4. NUTRITION
+             ================================================================== -->
+        <section
+          class="section"
+          id="nutrition"
+          aria-labelledby="nutrition-title"
+        >
+          <div class="section__header">
+            <span class="section__badge" aria-hidden="true">03</span>
+            <h2 class="section__title" id="nutrition-title">
+              Health Benefits
+            </h2>
+          </div>
+
+          <div class="section__body">
+            <p class="lead nutrition__subtitle">
+              Approximate values per 100 g of raw fruit
+            </p>
+
+            <!--
+              Static comparison bars.
+              Each fill carries data-value / data-max so the widths can later be
+              recomputed in JavaScript (and animated) without changing markup.
+            -->
+            <div class="bars">
+              <!-- Calories -->
+              <div class="bars__group">
+                <h3 class="bars__label">
+                  Calories <span class="bars__unit">kcal</span>
+                </h3>
+                <div class="bar">
+                  <span class="bar__fruit">Peach</span>
+                  <span class="bar__track" aria-hidden="true">
+                    <span
+                      class="bar__fill bar__fill--peach"
+                      style="--bar-width: 78%"
+                      data-value="39"
+                      data-max="50"
+                    ></span>
+                  </span>
+                  <span class="bar__value">39 kcal</span>
+                </div>
+                <div class="bar">
+                  <span class="bar__fruit">Nectarine</span>
+                  <span class="bar__track" aria-hidden="true">
+                    <span
+                      class="bar__fill bar__fill--nectarine"
+                      style="--bar-width: 88%"
+                      data-value="44"
+                      data-max="50"
+                    ></span>
+                  </span>
+                  <span class="bar__value">44 kcal</span>
+                </div>
+              </div>
+
+              <!-- Vitamin C -->
+              <div class="bars__group">
+                <h3 class="bars__label">
+                  Vitamin C <span class="bars__unit">mg</span>
+                </h3>
+                <div class="bar">
+                  <span class="bar__fruit">Peach</span>
+                  <span class="bar__track" aria-hidden="true">
+                    <span
+                      class="bar__fill bar__fill--peach"
+                      style="--bar-width: 82.5%"
+                      data-value="6.6"
+                      data-max="8"
+                    ></span>
+                  </span>
+                  <span class="bar__value">6.6 mg</span>
+                </div>
+                <div class="bar">
+                  <span class="bar__fruit">Nectarine</span>
+                  <span class="bar__track" aria-hidden="true">
+                    <span
+                      class="bar__fill bar__fill--nectarine"
+                      style="--bar-width: 67.5%"
+                      data-value="5.4"
+                      data-max="8"
+                    ></span>
+                  </span>
+                  <span class="bar__value">5.4 mg</span>
+                </div>
+              </div>
+
+              <!-- Potassium -->
+              <div class="bars__group">
+                <h3 class="bars__label">
+                  Potassium <span class="bars__unit">mg</span>
+                </h3>
+                <div class="bar">
+                  <span class="bar__fruit">Peach</span>
+                  <span class="bar__track" aria-hidden="true">
+                    <span
+                      class="bar__fill bar__fill--peach"
+                      style="--bar-width: 86.4%"
+                      data-value="190"
+                      data-max="220"
+                    ></span>
+                  </span>
+                  <span class="bar__value">190 mg</span>
+                </div>
+                <div class="bar">
+                  <span class="bar__fruit">Nectarine</span>
+                  <span class="bar__track" aria-hidden="true">
+                    <span
+                      class="bar__fill bar__fill--nectarine"
+                      style="--bar-width: 91.4%"
+                      data-value="201"
+                      data-max="220"
+                    ></span>
+                  </span>
+                  <span class="bar__value">201 mg</span>
+                </div>
+              </div>
+
+              <!-- Fiber -->
+              <div class="bars__group">
+                <h3 class="bars__label">
+                  Fiber <span class="bars__unit">g</span>
+                </h3>
+                <div class="bar">
+                  <span class="bar__fruit">Peach</span>
+                  <span class="bar__track" aria-hidden="true">
+                    <span
+                      class="bar__fill bar__fill--peach"
+                      style="--bar-width: 75%"
+                      data-value="1.5"
+                      data-max="2"
+                    ></span>
+                  </span>
+                  <span class="bar__value">1.5 g</span>
+                </div>
+                <div class="bar">
+                  <span class="bar__fruit">Nectarine</span>
+                  <span class="bar__track" aria-hidden="true">
+                    <span
+                      class="bar__fill bar__fill--nectarine"
+                      style="--bar-width: 85%"
+                      data-value="1.7"
+                      data-max="2"
+                    ></span>
+                  </span>
+                  <span class="bar__value">1.7 g</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Benefit cards -->
+            <div class="grid grid--three">
+              <div class="tile benefit">
+                <span class="benefit__icon" aria-hidden="true">
+                  <svg class="icon icon--leaf" aria-hidden="true">
+                    <use href="#icon-shield-check" />
+                  </svg>
+                </span>
+                <p class="benefit__text">
+                  <strong>Vitamin C:</strong> Supports the immune system and
+                  helps the body make collagen for healthy skin.
+                </p>
+              </div>
+              <div class="tile benefit">
+                <span class="benefit__icon" aria-hidden="true">
+                  <svg class="icon icon--leaf" aria-hidden="true">
+                    <use href="#icon-wheat" />
+                  </svg>
+                </span>
+                <p class="benefit__text">
+                  <strong>Fiber and potassium:</strong> Fiber helps digestion,
+                  and potassium supports healthy muscles and heart.
+                </p>
+              </div>
+              <div class="tile benefit">
+                <span class="benefit__icon" aria-hidden="true">
+                  <svg class="icon icon--leaf" aria-hidden="true">
+                    <use href="#icon-drop" />
+                  </svg>
+                </span>
+                <p class="benefit__text">
+                  <strong>Light and hydrating:</strong> Low in calories and rich
+                  in water: a refreshing snack on a hot day.
+                </p>
+              </div>
+            </div>
+
+            <p class="source-note">
+              <span class="source-note__icon" aria-hidden="true">
+                <svg class="icon" aria-hidden="true"><use href="#icon-info" /></svg>
+              </span>
+              Both fruits are nutritionally very similar. Values are
+              approximate and change with variety and ripeness. Source: USDA
+              FoodData Central.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             5. COOKING
+             ================================================================== -->
+        <section class="section" id="cooking" aria-labelledby="cooking-title">
+          <div class="section__header">
+            <span class="section__badge" aria-hidden="true">04</span>
+            <h2 class="section__title" id="cooking-title">
+              In the Kitchen
+            </h2>
+          </div>
+
+          <div class="section__body">
+            <!-- Wide banner above the four kitchen cards -->
+            <figure class="figure--banner">
+              <div class="frame frame--banner">
+                <a href="./images/cooking.jpg" target="_blank" rel="noopener">
+                  <img
+                  alt="A nectarine caprese salad and a peach crumble with ice cream on a kitchen counter, next to two handwritten recipe cards"
+                  width="1024"
+                  height="559"
+                  decoding="async"
+                  loading="lazy"
+                />
+                </a>
+              </div>
+              <figcaption class="figure__caption">
+                Nectarine caprese salad and peach crumble.
+              </figcaption>
+            </figure>
+
+            <div class="grid grid--two">
+              <div class="tile cook-card">
+                <h3 class="cook-card__title">
+                  <span aria-hidden="true">
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#icon-bowl" />
+                    </svg>
+                  </span>
+                  Fresh
+                </h3>
+                <ul class="cook-card__list">
+                  <li>Eat them whole, juicy and ready to go</li>
+                  <li>Slice them into salads, yogurt or oatmeal</li>
+                </ul>
+              </div>
+
+              <div class="tile cook-card">
+                <h3 class="cook-card__title">
+                  <span aria-hidden="true">
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#icon-pie" />
+                    </svg>
+                  </span>
+                  Baked
+                </h3>
+                <ul class="cook-card__list">
+                  <li>Classic peach pie, cobbler and crumble</li>
+                  <li>Grilled or roasted for a warm, caramelized dessert</li>
+                </ul>
+              </div>
+
+              <div class="tile cook-card">
+                <h3 class="cook-card__title">
+                  <span aria-hidden="true">
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#icon-jar" />
+                    </svg>
+                  </span>
+                  Preserved
+                </h3>
+                <ul class="cook-card__list">
+                  <li>Jam, syrup and canned fruit that last all year</li>
+                  <li>Dried slices for a chewy, sweet snack</li>
+                </ul>
+              </div>
+
+              <div class="tile cook-card">
+                <h3 class="cook-card__title">
+                  <span aria-hidden="true">
+                    <svg class="icon icon--nectarine" aria-hidden="true">
+                      <use href="#icon-glass" />
+                    </svg>
+                  </span>
+                  Drinks
+                </h3>
+                <ul class="cook-card__list">
+                  <li>Smoothies, juices and iced tea</li>
+                  <li>The Bellini: peach purée with sparkling wine</li>
+                </ul>
+              </div>
+            </div>
+
+            <p class="tip-line">
+              <span class="tip-line__icon" aria-hidden="true">
+                <svg class="icon" aria-hidden="true"><use href="#icon-flame" /></svg>
+              </span>
+              Tip: nectarines hold their shape well on the grill, and their
+              smooth skin is thin and edible, so there is no need to peel them.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             6. FUN FACTS
+             Static: front and back are stacked and both readable.
+             With JavaScript, modules/flipCards.js turns each card into a
+             flip card (role="button", Enter/Space/click) showing one face.
+             ================================================================== -->
+        <section
+          class="section"
+          id="fun-facts"
+          aria-labelledby="fun-facts-title"
+        >
+          <div class="section__header">
+            <span class="section__badge" aria-hidden="true">05</span>
+            <h2 class="section__title" id="fun-facts-title">Fun Facts</h2>
+          </div>
+
+          <div class="section__body">
+            <!-- Hint for the flip cards (screen only, hidden without JS too) -->
+            <p class="flip-hint no-print">Tap a card to reveal the fact.</p>
+
+            <div class="grid grid--three">
+              <div class="fact-card">
+                <div class="fact-card__front">
+                  <span class="fact-card__emoji" aria-hidden="true">
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#icon-flower" />
+                    </svg>
+                  </span>
+                  <h3 class="fact-card__title">Rose family?</h3>
+                  <span class="fact-card__hint no-print">Tap to flip</span>
+                </div>
+                <div class="fact-card__back">
+                  <p>
+                    Peaches and nectarines belong to the rose family, along with
+                    apples, cherries, plums and almonds.
+                  </p>
+                </div>
+              </div>
+
+              <div class="fact-card">
+                <div class="fact-card__front">
+                  <span class="fact-card__emoji" aria-hidden="true">
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#icon-infinity" />
+                    </svg>
+                  </span>
+                  <h3 class="fact-card__title">Fruit of immortality</h3>
+                  <span class="fact-card__hint no-print">Tap to flip</span>
+                </div>
+                <div class="fact-card__back">
+                  <p>
+                    In Chinese legend, eating a peach gives long life. Peach
+                    trees symbolize luck and longevity, and “longevity peach”
+                    buns are still served at birthdays.
+                  </p>
+                </div>
+              </div>
+
+              <div class="fact-card">
+                <div class="fact-card__front">
+                  <span class="fact-card__emoji" aria-hidden="true">
+                    <svg class="icon icon--nectarine" aria-hidden="true">
+                      <use href="#icon-cocktail" />
+                    </svg>
+                  </span>
+                  <h3 class="fact-card__title">Bellini</h3>
+                  <span class="fact-card__hint no-print">Tap to flip</span>
+                </div>
+                <div class="fact-card__back">
+                  <p>
+                    The Bellini was created in Venice around 1948. It is made
+                    with white peach purée and sparkling wine, and it is named
+                    after the painter Giovanni Bellini.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             7. SOURCES & CREDITS
+             ================================================================== -->
+        <section class="section" id="sources" aria-labelledby="sources-title">
+          <div class="section__header">
+            <span class="section__badge" aria-hidden="true">06</span>
+            <h2 class="section__title" id="sources-title">
+              Sources &amp; Credits
+            </h2>
+          </div>
+
+          <div class="section__body">
+            <ul class="source-list">
+              <li>
+                <span aria-hidden="true">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-book" /></svg>
+                </span>
+                Encyclopaedia Britannica: peach and nectarine
+              </li>
+              <li>
+                <span aria-hidden="true">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-flask" /></svg>
+                </span>
+                USDA FoodData Central: raw peaches and raw nectarines
+              </li>
+              <li>
+                <span aria-hidden="true">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-image" /></svg>
+                </span>
+                Image credits:
+                <span>Images were selected for this school project and are used for educational purposes only.</span>
+                <!-- Replaced by a <ul> built from src/credits.js in main.js -->
+                <span class="credits-placeholder">(to be added)</span>
+              </li>
+            </ul>
+
+            <!-- Screen-only helper: a plain anchor, no JavaScript.
+                 Marked .no-print so it disappears from the printed poster. -->
+            <p class="no-print">
+              <a class="back-to-top" href="#hero">
+                Back to top
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up" /></svg>
+              </a>
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <footer class="signature">
+        <p class="signature__name">Adrian del Valle Miranda</p>
+        <p class="signature__meta">Group: NÑ · Grade: 5th · Subject: English V</p>
+        <p class="signature__date">October 2026</p>
+      </footer>
+    </main>
+
+    <!-- Vite injects the bundled script here -->
+    
+  <!-- lightbox module (inline to avoid external deps) -->
+  <script type="module" src="./src/modules/lightbox.js"></script>
+  
+  <!-- Lightbox dialog (inert until opened by script) -->
+  <dialog id="lightbox-dialog" aria-hidden="true" class="visually-hidden" style="inset:0; padding:1rem;">
+    <button type="button" class="visually-hidden" id="lightbox-close" aria-label="Close dialog">&times;</button>
+    <button type="button" class="visually-hidden" id="lightbox-prev" aria-label="Previous image">‹</button>
+    <button type="button" class="visually-hidden" id="lightbox-next" aria-label="Next image">›</button>
+    <img id="lightbox-img" src="" alt="" loading="lazy">
+    <p id="lightbox-caption" class="visually-hidden"></p>
+  </dialog>
+  <!-- Lightbox dialog (inert until opened by script) -->
+  <dialog id="lightbox-dialog" aria-hidden="true" class="visually-hidden" style="inset:0; padding:1rem;">
+    <button type="button" class="visually-hidden" id="lightbox-close" aria-label="Close dialog">&times;</button>
+    <button type="button" class="visually-hidden" id="lightbox-prev" aria-label="Previous image">‹</button>
+    <button type="button" class="visually-hidden" id="lightbox-next" aria-label="Next image">›</button>
+    <img id="lightbox-img" src="" alt="" loading="lazy">
+    <p id="lightbox-caption" class="visually-hidden"></p>
+  </dialog></body>
+</html>

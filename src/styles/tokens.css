@@ -1,0 +1,159 @@
+/* ==========================================================================
+   tokens.css — Design tokens
+   --------------------------------------------------------------------------
+   The single source of truth for the poster's visual language.
+   Every colour, size, space, radius and shadow used anywhere in the project
+   is declared here as a CSS custom property, so the design system can be
+   re-themed by editing this file alone.
+
+   Naming convention: --<category>-<role>-<variant>
+   e.g. --color-peach, --space-4, --font-heading, --radius-card
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     1. COLOUR PALETTE
+     Two fruit families + supporting neutrals, plus semantic aliases.
+     --------------------------------------------------------------------- */
+
+  /* Brand colours */
+  --color-peach: #ffb88c; /* Peach flesh and soft highlights        */
+  --color-deep-orange: #f2711c; /* Deep orange: primary accent       */
+  --color-nectarine-red: #d7385e; /* Nectarine skin: secondary accent  */
+  --color-leaf-green: #5c8a3a; /* Leaves and "facts" accent          */
+  --color-cream: #fff6ec; /* Page background                      */
+  --color-dark: #2b1b14; /* Body text and headings               */
+
+  /* Melon family — the warm peach/orange scale used for the poster's
+     surfaces, gradients and accents. Defined here and nowhere else. */
+  --color-melon-50: #fff1e6; /* Lightest wash — peach column body        */
+  --color-melon-100: #ffe0cc; /* Card gradients, table headers, tracks    */
+  --color-melon-200: #ffc9a8; /* Card borders, fun-fact front (top)       */
+  --color-melon-400: #ff9e6b; /* Heading underline, fun-fact front (base) */
+  --color-melon-600: #e4572e; /* Badges and timeline markers (with white) */
+  --color-melon-700: #c0431a; /* Deep stop — gradients and small text     */
+
+  /* Rose family — the mirror scale for the nectarine side, matched in
+     lightness to the melon scale so "Both" reads as balanced. */
+  --color-rose-50: #fdeef2; /* Lightest wash — nectarine column body     */
+  --color-rose-100: #fbdce5; /* Nectarine table header                    */
+  --color-rose-200: #f7c3d2; /* Stronger nectarine highlight              */
+  --color-rose-700: #c22f57; /* Dark stop for the fun-fact back gradient  */
+
+  /* Derived tints & shades (built from the palette above) */
+  --color-cream-soft: #fffaf4; /* Card surface, one step lighter      */
+  --color-peach-soft: #ffe3d2; /* Placeholder fills, subtle washes    */
+  --color-peach-deep: #f7c9a8; /* Borders that need more presence      */
+  --color-nectarine-soft: #fbdde4; /* Pale red wash for red-accent cards */
+  --color-leaf-soft: #e7f0da; /* Pale green wash for the facts card  */
+  --color-dark-soft: #5c463b; /* Secondary text (captions, meta)      */
+  /* Stronger dark for small text sitting on tinted melon surfaces, where
+     --color-text-muted does not reach AA on its own. */
+  --color-text-strong: #3f2417;
+
+  /* Pure tones */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Semantic aliases — components should use these, not raw brand colours */
+  --color-bg-page: var(--color-cream);
+  --color-bg-card: var(--color-cream-soft);
+  --color-text: var(--color-dark);
+  --color-text-muted: var(--color-dark-soft);
+  --color-accent-peach: var(--color-peach);
+  --color-accent-nectarine: var(--color-nectarine-red);
+  --color-accent-leaf: var(--color-leaf-green);
+
+  /* Focus ring colour (keyboard accessibility) */
+  --color-focus-ring: var(--color-deep-orange);
+
+  /* ---------------------------------------------------------------------
+     2. TYPOGRAPHY
+     Fonts are loaded from Google Fonts via <link> tags in index.html.
+     --------------------------------------------------------------------- */
+  --font-heading: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* Modular type scale (1.250 major third, rounded for a friendly poster) */
+  --font-size-xs: 0.75rem; /* 12px — badges, footnotes            */
+  --font-size-sm: 0.875rem; /* 14px — captions, labels             */
+  --font-size-base: 1rem; /* 16px — body copy                     */
+  --font-size-md: 1.125rem; /* 18px — lead paragraphs              */
+  --font-size-lg: 1.375rem; /* 22px — subheadings                  */
+  --font-size-xl: 1.75rem; /* 28px — section headings (small)     */
+  --font-size-2xl: 2.25rem; /* 36px — section headings (medium)    */
+  --font-size-3xl: 3rem; /* 48px — section headings (large)     */
+  --font-size-display: clamp(2.5rem, 8vw, 4.5rem); /* Hero title, fluid  */
+
+  /* Line heights */
+  --line-height-tight: 1.15;
+  --line-height-snug: 1.35;
+  --line-height-base: 1.65;
+
+  /* Letter spacing */
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-wide: 0.08em;
+
+  /* Font weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+
+  /* ---------------------------------------------------------------------
+     3. SPACING SCALE
+     4px base unit. Use these instead of arbitrary pixel values so that
+     rhythm stays consistent across the poster.
+     --------------------------------------------------------------------- */
+  --space-0: 0;
+  --space-1: 0.25rem; /*  4px */
+  --space-2: 0.5rem; /*  8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.5rem; /* 24px */
+  --space-6: 2rem; /* 32px */
+  --space-7: 3rem; /* 48px */
+  --space-8: 4rem; /* 64px */
+  --space-9: 6rem; /* 96px */
+
+  /* Component-specific spacing */
+  --space-section-padding: clamp(1.25rem, 4vw, 2.5rem);
+  --space-card-gap: clamp(1rem, 3vw, 1.5rem);
+  --space-stack: var(--space-4); /* Vertical rhythm between blocks  */
+
+  /* ---------------------------------------------------------------------
+     4. BORDER RADIUS
+     --------------------------------------------------------------------- */
+  --radius-xs: 0.25rem; /*  4px — badges              */
+  --radius-sm: 0.5rem; /*  8px — small elements       */
+  --radius-md: 1rem; /* 16px — inputs, chips        */
+  --radius-lg: 1.5rem; /* 24px — cards, image frames  */
+  --radius-xl: 2.5rem; /* 40px — poster container     */
+  --radius-pill: 999px; /* Fully rounded pills         */
+
+  /* ---------------------------------------------------------------------
+     5. BORDERS
+     --------------------------------------------------------------------- */
+  --border-width-thin: 1px;
+  --border-width-thick: 3px;
+  --border-color-soft: var(--color-peach-deep);
+  --border-color-accent: var(--color-deep-orange);
+
+  /* ---------------------------------------------------------------------
+     6. SHADOWS (soft, warm-tinted — never harsh black)
+     --------------------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgb(43 27 20 / 0.06);
+  --shadow-md: 0 4px 10px rgb(43 27 20 / 0.08);
+  --shadow-lg: 0 10px 24px rgb(43 27 20 / 0.1);
+  --shadow-xl: 0 18px 40px rgb(43 27 20 / 0.12);
+  /* Coloured glow used behind hero images */
+  --shadow-glow-peach: 0 12px 32px rgb(242 113 28 / 0.18);
+  --shadow-glow-nectarine: 0 12px 32px rgb(215 56 94 / 0.18);
+
+  /* ---------------------------------------------------------------------
+     7. LAYOUT
+     --------------------------------------------------------------------- */
+  --poster-max-width: 1000px;
+  --content-max-width: 68ch; /* Readable measure for long paragraphs */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}

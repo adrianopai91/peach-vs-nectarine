@@ -1,0 +1,473 @@
+/* ==========================================================================
+   print.css — A3 poster print rules
+   --------------------------------------------------------------------------
+   Only applied when the page is printed (Ctrl/Cmd + P).
+   Goal: the poster fills a single A3 portrait sheet edge to edge, keeps all
+   brand colours, and never splits a section across two pages.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. PAGE FORMAT
+   -------------------------------------------------------------------------- */
+@page {
+  size: A3 portrait;
+  /* Full-bleed background colours need zero page margin; inner spacing is
+     provided by .poster instead. */
+  margin: 0;
+}
+
+@media print {
+  /* --------------------------------------------------------------
+     2. COLOUR FIDELITY
+     Browsers strip backgrounds by default. Force them back on so the
+     peach / nectarine palette survives on paper. `print-color-adjust`
+     is inherited, so applying it to the root covers every element —
+     bars, table tints and callouts included.
+
+     Only the page itself is pinned to cream; every other element keeps
+     the background its own rule gives it (a `*` background would win
+     over the section tints and the bar fills and leave them cream).
+     -------------------------------------------------------------- */
+  html,
+  body {
+    background-color: var(--color-cream) !important;
+  }
+
+  html,
+  body,
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* --------------------------------------------------------------
+     3. HIDE SCREEN-ONLY UI
+     Anything marked .no-print disappears from the printed poster.
+     -------------------------------------------------------------- */
+  .no-print {
+    display: none !important;
+  }
+
+  /* --------------------------------------------------------------
+     4. PAGE BOX
+     A3 is 297mm wide; a 10mm inset keeps the design off the trim edge.
+     -------------------------------------------------------------- */
+  .poster {
+    max-width: none;
+    width: 297mm;
+    margin: 0;
+    padding: 5mm;
+  }
+
+  /* --------------------------------------------------------------
+     5. TYPOGRAPHY FOR PAPER
+     Point sizes read better than pixels once the sheet is 297mm wide.
+     Kept small so every section still lands on a single sheet.
+     -------------------------------------------------------------- */
+  body {
+    font-size: 8pt;
+    line-height: 1.35;
+  }
+
+  h1 {
+    font-size: 44pt;
+  }
+
+  h2 {
+    font-size: 16pt;
+  }
+
+  h3 {
+    font-size: 10pt;
+  }
+
+  .lead {
+    font-size: 8.5pt;
+  }
+
+  .placeholder-text {
+    font-size: 8.5pt;
+  }
+
+  /* --------------------------------------------------------------
+     6. FLATTEN THE SCREEN DECORATION
+     Shadows blur badly on paper, so replace them with hairline borders.
+     -------------------------------------------------------------- */
+  .section,
+  .tile,
+  .fact-card,
+  .image-placeholder {
+    box-shadow: none !important;
+  }
+
+  .section {
+    /* Keep every card whole: never start or end one mid-section */
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding: 1.5mm;
+    border: 1pt solid var(--border-color-soft);
+  }
+
+  .image-placeholder {
+    /* Placeholder frames collapse on paper — they are a scaffold, not content */
+    display: none !important;
+  }
+
+  /* Compact vertical rhythm, in millimetres instead of fluid screen values */
+  .poster__sections {
+    gap: 5mm;
+  }
+
+  .section__header {
+    margin-bottom: 1mm;
+  }
+
+  .section__body,
+  .grid,
+  .bars,
+  .timeline,
+  .source-list {
+    gap: 2mm;
+  }
+
+  .tile,
+  .fact-card {
+    padding: 1.8mm;
+  }
+
+  .callout,
+  .tip-line {
+    padding: 1.8mm 2.5mm;
+  }
+
+  /* --------------------------------------------------------------
+     7. PRINT LAYOUT — fit the whole poster on ONE A3 sheet
+     On screen the sections are a single vertical column, which is
+     far too tall for one sheet. On paper they become a two-column
+     grid; DOM order is unchanged, so the reading order is preserved.
+     Pairs are adjacent sections only:
+       hero                       (full width)
+       origin        | comparison
+       nutrition     | cooking
+       fun-facts     | sources
+     -------------------------------------------------------------- */
+  .poster__sections {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5mm;
+    align-items: start;
+  }
+
+  .hero {
+    grid-column: 1 / -1;
+  }
+
+  /* Hero on paper: title + subtitle, then the two labels side by side */
+  .hero__title {
+    font-size: 22pt;
+  }
+
+  .hero__subtitle {
+    font-size: 10pt;
+  }
+
+  .hero__figures {
+    margin-top: 4mm;
+  }
+
+  .hero__figure-caption {
+    font-size: 10.5pt;
+  }
+
+  /* Grids keep their columns inside the half-width print columns: the copy in
+     these cards is short, so stacking would only waste vertical space. */
+  .grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid--three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Nutrition: two bar groups per row, benefit cards stay side by side */
+  .bars {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5mm 5mm;
+  }
+
+  /* Origin: the timeline and the myth-buster callout sit side by side */
+  #origin .section__body {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 3mm;
+    align-items: start;
+  }
+
+  #origin .fact-line {
+    grid-column: 1 / -1;
+  }
+
+  .timeline__text,
+  .callout__text,
+  .cook-card__list,
+  .fact-card__back,
+  .source-list,
+  .benefit__text,
+  .tip-line {
+    font-size: 8pt;
+  }
+
+  /* --------------------------------------------------------------
+     8. COMPONENTS ON PAPER
+     -------------------------------------------------------------- */
+
+  /* Photographs are sized for paper: on A3 the poster has to hold seven
+     sections plus four images on a single sheet, so the frames shrink.
+     Only the sizes change here — never the files themselves. */
+  .frame--hero {
+    /* Keep the natural 4:3 crop instead of slicing the photo into a band:
+       cap the frame width and let the ratio give the height. */
+    max-width: 52mm;
+    margin-inline: auto;
+  }
+
+  .frame--banner {
+    height: 26mm;
+  }
+
+  .frame {
+    box-shadow: none !important;
+    border-width: 0.5pt;
+  }
+
+  /* The credits are legal small print on paper */
+  .credits-list {
+    font-size: 7pt;
+    gap: 0.5mm;
+    margin-top: 1mm;
+  }
+
+  /* Timeline: keep each stop with its label */
+  .timeline__step {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding-block: 0.6mm;
+  }
+
+  /* Comparison table: never split a row, keep the column tints.
+     8.5pt so the Genetics row does not blow up the column height. */
+  .compare {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    font-size: 8.5pt;
+  }
+
+  .compare tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .compare th,
+  .compare td {
+    padding: 0.8mm;
+  }
+
+  /* Bars: thinner tracks, but the coloured fills must still print */
+  .bar {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 1mm;
+  }
+
+  .bar__track {
+    height: 2mm;
+    border: 0.5pt solid var(--border-color-soft);
+  }
+
+  /* Fact cards keep front above back; the flip is a screen-only effect */
+  .fact-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Closing signature block: compact panel at the foot of the sheet */
+  .signature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 1.5mm;
+    padding: 1mm 4mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .signature__name {
+    font-size: 12pt;
+  }
+
+  .signature__meta {
+    margin-top: 0.4mm;
+    font-size: 8pt;
+  }
+
+  .signature__date {
+    margin-top: 0.2mm;
+    font-size: 7.5pt;
+    text-align: center;
+    padding-inline-start: var(--letter-spacing-wide);
+  }
+
+  /* Timeline and card labels sit a notch smaller than on screen */
+  .timeline__label,
+  .bars__label {
+    font-size: 10pt;
+    margin-bottom: 1mm;
+  }
+
+  .bar__value {
+    font-size: 8pt;
+  }
+
+  .source-note {
+    font-size: 8pt;
+    padding-top: 2mm;
+  }
+
+  /* --------------------------------------------------------------
+     9. INLINE ADJUSTMENTS
+     -------------------------------------------------------------- */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Long URLs in the sources section should wrap instead of overflowing */
+  a[href^='http'] {
+    word-break: break-all;
+  }
+
+  /* --------------------------------------------------------------
+     10. INTERACTIONS RETURN TO THEIR STATIC STATE
+     --------------------------------------------------------------
+     The interactive layer in base.css is scoped under `html.js`, and <html>
+     still carries that class when printing — so every enhanced state is reset
+     here with !important. On paper the poster is always the static version:
+     both faces of a fact card stacked and readable, every bar at full width
+     with its final number, the whole timeline visible, and no controls.
+     (The .fruit-switch and .flip-hint are .no-print, so rule 3 hides them.)
+     -------------------------------------------------------------- */
+
+  /* Flip cards: front above back, no 3D, no rotation, no pointer cursor.
+     The two faces keep their own coloured blocks (melon front, deep back),
+     stacked with a small gap; the outer card is just the stack. */
+  .fact-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5mm;
+    min-height: 0 !important;
+    padding: 0;
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    cursor: auto;
+    transform: none !important;
+    transform-style: flat;
+  }
+
+  .fact-card__front,
+  .fact-card__back {
+    position: static !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+  }
+
+  .fact-card__front {
+    border-radius: var(--radius-sm) !important;
+  }
+
+  .fact-card__back {
+    border-radius: var(--radius-sm) !important;
+  }
+
+  /* Nutrition bars: full width, no transition, no dimming */
+  .bar__fill {
+    width: var(--bar-width) !important;
+    transition: none !important;
+  }
+
+  .bar {
+    opacity: 1 !important;
+  }
+
+  /* Timeline: every stop visible, including any still waiting to be revealed */
+  .timeline__step > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* The fruit switch can never leave a column dimmed on paper */
+  .compare th,
+  .compare td {
+    opacity: 1 !important;
+  }
+
+  /* Focus rings are for keyboard users on screen, never on paper */
+  :focus-visible {
+    outline: none !important;
+  }
+
+  /* --------------------------------------------------------------
+     11. SCROLL REVEAL AND ICONS ON PAPER
+     --------------------------------------------------------------
+     The reveal (base.css 13) is already confined to `@media screen`, so paper
+     never sees it. These rules repeat the same guarantee explicitly: whatever
+     the poster was doing on screen — mid page turn, mid card turn, never
+     scrolled — the printed sheet is the finished poster.
+
+     The icons are strokes in a token colour, so they only need colour
+     adjustment forced on, like every other background on this sheet.
+     -------------------------------------------------------------- */
+  .section,
+  .benefit,
+  .cook-card,
+  .fact-card,
+  .compare,
+  .bars__group {
+    opacity: 1 !important;
+    transform: none !important;
+    rotate: none !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    transition: none !important;
+  }
+
+  /* No 3D on paper: the perspective the reveal was seen in is switched off */
+  .poster {
+    perspective: none !important;
+  }
+
+  .poster__sections {
+    transform-style: flat !important;
+  }
+
+  .icon,
+  .row-icon {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Banner captions sit under their photograph */
+  .figure--banner {
+    gap: 1mm;
+  }
+
+  .figure__caption {
+    font-size: 7pt;
+  }
+}
