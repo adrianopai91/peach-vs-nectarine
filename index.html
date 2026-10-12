@@ -526,6 +526,7 @@
                   width="450"
                   src="./images/hero-peach.jpg"
                   height="300"
+                  style="aspect-ratio: 4 / 3"
                   decoding="async"
                   loading="eager"
                 />
@@ -547,6 +548,7 @@
                   width="700"
                   src="./images/hero-nectarine.jpg"
                   height="350"
+                  style="aspect-ratio: 4 / 3"
                   decoding="async"
                   loading="eager"
                 />
@@ -1248,7 +1250,8 @@
                   <svg class="icon" aria-hidden="true"><use href="#icon-image" /></svg>
                 </span>
                 Image credits:
-                <span>Images were selected for this school project and are used for educational purposes only.</span>
+                <span class="credits-placeholder">(to be added)</span>
+                <span class="credits-sentence">Images were selected for this school project and are used for educational purposes only.</span>
               </li>
             </ul>
 
@@ -1274,7 +1277,7 @@
     <!-- Vite injects the bundled script here -->
     
   <!-- lightbox module (inline to avoid external deps) -->
-  <script type="module" src="./src/modules/lightbox.js"></script>
+  <script type="module" src="/src/main.js"></script>
   
   <!-- Lightbox dialog (inert until opened by script) -->
   <dialog id="lightbox-dialog" aria-hidden="true" class="visually-hidden" style="inset:0; padding:1rem;">
