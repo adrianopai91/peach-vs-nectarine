@@ -279,19 +279,39 @@ h3 {
 }
 
 /* Ensure any <a> wrapping an image in a frame has no border/decoration */
-.frame a {
+.frame a,
+.frame button.lightbox-image-btn {
   display: block;
   text-decoration: none;
   border: 0;
-  outline: 0;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  background: none;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+  height: 100%;
+  line-height: 0;
+  cursor: zoom-in;
+  border-radius: inherit;
+  overflow: hidden;
 }
-.frame a:focus,
+.frame a:focus-visible,
+.frame button.lightbox-image-btn:focus-visible {
+  outline: var(--border-width-thick) solid var(--color-focus-ring);
+  outline-offset: var(--space-1);
+}
 .frame a:hover,
 .frame a:active,
-.frame a:visited {
+.frame a:visited,
+.frame button.lightbox-image-btn:hover,
+.frame button.lightbox-image-btn:active,
+.frame button.lightbox-image-btn:visited {
   text-decoration: none;
   border: 0;
   outline: 0;
+  background: none;
 }
 
 .frame img {
@@ -302,6 +322,7 @@ h3 {
   object-position: center;
   border: 0;
   outline: 0;
+  border-radius: inherit;
 }
 
 /* Hero portraits: one shared 4:3 frame, so the two frames are always the same
@@ -361,6 +382,7 @@ h3 {
   height: auto;
   object-fit: contain;
   object-position: center;
+  border-radius: inherit;
 }
 
 /* When the image would exceed 440px, the frame caps and the image covers */
@@ -371,6 +393,7 @@ h3 {
   .frame--banner:has(img[style*="aspect-ratio"]) img {
     height: 100%;
     object-fit: cover;
+    border-radius: inherit;
   }
 }
 
@@ -1188,7 +1211,8 @@ html.js .fruit-switch {
 /* Sliding switch: track with three equal segments and a sliding thumb */
 html.js .fruit-switch__control {
   position: relative;
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0;
   padding: var(--border-width-thin);
   background-color: var(--color-melon-100);
@@ -1210,8 +1234,7 @@ html.js .fruit-switch__segment {
 html.js .fruit-switch__btn {
   position: relative;
   z-index: 1;
-  flex: 1 1 0;
-  min-width: 0;
+  grid-column: auto;
   padding: var(--space-1) var(--space-2);
   background-color: transparent;
   border: 0;
@@ -1221,6 +1244,7 @@ html.js .fruit-switch__btn {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   white-space: nowrap;
+  text-align: center;
   transition: color var(--transition-base);
 }
 
@@ -1235,8 +1259,8 @@ html.js .fruit-switch__thumb {
   z-index: 0;
   top: var(--border-width-thin);
   left: var(--border-width-thin);
-  width: calc(100% / 3 - var(--border-width-thin) * 2);
-  height: calc(100% - var(--border-width-thin) * 2);
+  width: calc((100% - 2 * var(--border-width-thin)) / 3);
+  height: calc(100% - 2 * var(--border-width-thin));
   background-color: var(--color-white);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-sm);
@@ -1246,13 +1270,13 @@ html.js .fruit-switch__thumb {
 
 /* Thumb positions for each fruit (0=peach, 1=nectarine, 2=both) */
 html.js[data-fruit='peach'] .fruit-switch__thumb {
-  transform: translateX(0);
+  transform: translateX(0%);
 }
 html.js[data-fruit='nectarine'] .fruit-switch__thumb {
-  transform: translateX(calc(100% / 3));
+  transform: translateX(100%);
 }
 html.js[data-fruit='both'] .fruit-switch__thumb {
-  transform: translateX(calc(200% / 3));
+  transform: translateX(200%);
 }
 
 /* Reduced motion: instant thumb movement */
