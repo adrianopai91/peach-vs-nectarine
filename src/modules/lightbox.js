@@ -125,7 +125,7 @@
 
     // hero images: from #hero section figures
     $$('#hero .hero__figure img').forEach((img) => {
-      const btn = img.closest('.lightbox-image-btn')
+      let btn = img.closest('.lightbox-image-btn')
       if (!btn) {
         // wrap the image
         const newBtn = createElement('button', {
@@ -148,7 +148,7 @@
 
     // banner images: from .figure--banner figures
     $$('.figure--banner img').forEach((img) => {
-      const btn = img.closest('.lightbox-image-btn')
+      let btn = img.closest('.lightbox-image-btn')
       if (!btn) {
         const newBtn = createElement('button', {
           type: 'button',

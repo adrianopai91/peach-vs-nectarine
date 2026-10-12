@@ -100,12 +100,13 @@ function renderCredits() {
 }
 
 /**
- * Initialises the poster. This runs immediately (no DOMContentDelayed wait),
- * adds the `js` class to activate the interactive layer in base.css, and
- * starts all modules with try/catch safety nets.
+ * Initialises the poster. Runs after the page has loaded, adds the `js` class
+ * to activate the interactive layer in base.css, and starts all modules with
+ * try/catch safety nets so one failing module never stops the rest of the poster
+ * from loading.
  */
 function init() {
-  // 1. Mark the document as scripted — this MUST run first so base.css
+  // 1. Mark the document as scripted — THIS MUST RUN FIRST so that base.css
   //    interactive rules (`.js` selectors, `.no-print` hiding, etc.) take effect.
   document.documentElement.classList.add(JS_CLASS);
 
@@ -124,28 +125,28 @@ function init() {
   // 4. Initialise every module, one by one, wrapped in try/catch so one
   //    failing module never stops the rest of the poster from loading.
   //    Each module's init function is called and its result is stored,
-    //    but errors are caught and logged without stopping the pipeline.
+  //    but errors are caught and logged without stopping the pipeline.
   
   // Fruit switch: Peach / Nectarine / Both segmented control
-  try { window.fruitSwitchInit = initFruitSwitch(); } catch (e) { console.error('fruitSwitch', e); }
+  try { initFruitSwitch(); } catch (e) { console.error('fruitSwitch', e); }
 
   // Flip cards: 3D flip cards in #fun-facts
-  try { window.flipCardsInit = initFlipCards(); } catch (e) { console.error('flipCards', e); }
+  try { initFlipCards(); } catch (e) { console.error('flipCards', e); }
 
   // Nutrition bars: animated bars with final values
-  try { window.nutritionBarsInit = initNutritionBars(); } catch (e) { console.error('nutritionBars', e); }
+  try { initNutritionBars(); } catch (e) { console.error('nutritionBars', e); }
 
   // Timeline reveal: origin journey timeline
-  try { window.timelineRevealInit = initTimelineReveal(); } catch (e) { console.error('timelineReveal', e); }
+  try { initTimelineReveal(); } catch (e) { console.error('timelineReveal', e); }
 
   // Card reveal: scroll/page turn reveal
-  try { window.cardRevealInit = initCardReveal(); } catch (e) { console.error('cardReveal', e); }
+  try { initCardReveal(); } catch (e) { console.error('cardReveal', e); }
 
   // Falling shapes: decorative emoji layers
-  try { window.fallingShapesInit = initFallingShapes(); } catch (e) { console.error('fallingShapes', e); }
+  try { initFallingShapes(); } catch (e) { console.error('fallingShapes', e); }
 
   // Lightbox: click-to-enlarge for hero and banner photos
-  try { window.lightboxInit = initLightbox(); } catch (e) { console.error('lightbox', e); }
+  try { initLightbox(); } catch (e) { console.error('lightbox', e); }
 
   console.info(
     `[poster] ${sections.length} sections ready: ${SECTION_IDS.join(', ')}`,
@@ -155,5 +156,5 @@ function init() {
   );
 }
 
-/** Run init immediately — no DOMContentDelayed dependency. */
-init();
+/** Run init after the page has loaded */
+window.addEventListener('DOMContentLoaded', init);
